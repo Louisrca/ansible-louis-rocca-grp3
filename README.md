@@ -1,5 +1,7 @@
-# Pour run le projet
+# Projet Ansible
+Déployer un serveur GitLab en utilisant Ansible pour automatiser l’ensemble du processus. Le but final est bien de n’avoir qu’un “push button” pour deployer le serveur Gitlab.
 
+##Pour run le projet
 
 ```shell
 ansible-playbook -i inventory.yml main.yml -e "user_name=<nom_utilisateur> host_ip=<ip-vm-client>"
