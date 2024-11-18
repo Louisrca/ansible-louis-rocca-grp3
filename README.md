@@ -17,5 +17,5 @@ http://<votre-ip-vm-client>:2443
 ### Pour vérifier que postgresql est installé sur la vm : 
 
 ```shell
-psql -U postgres ## puis utilisé le mdp
+psql -U postgres # puis utilisé le mdp
 ```
