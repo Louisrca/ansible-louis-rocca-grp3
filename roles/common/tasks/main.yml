@@ -1,0 +1,24 @@
+- name: Mettre à jour le cache apt
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Installation des common packages
+  apt:
+    name: "{{ item.name }}"
+    state: present
+    update_cache: yes
+  become: yes
+  loop: "{{ common_packages | default([]) }}"
+
+- name: Création du groupe guests-ansible
+  group:
+    name: guests-ansible
+    state: present
+
+- name: Créer un nouvel utilisateur
+  user:
+    name: "{{ user_name }}"
+    state: present
+    groups: guests-ansible
+  when: user_name is defined

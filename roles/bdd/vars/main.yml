@@ -1,0 +1,3 @@
+#var file
+postgresql_password: "vagrant_pwd"
+postgres_admin_password: "postgres_pwd"

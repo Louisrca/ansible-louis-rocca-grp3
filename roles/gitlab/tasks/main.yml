@@ -1,0 +1,40 @@
+- name: Mettre à jour les dépôts sans sortie
+  shell: apt-get update
+  become: yes  # Exécution avec sudo
+
+- name: Télécharger et exécuter le script d'installation de GitLab
+  shell: |
+    curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+  args:
+    creates: /etc/apt/sources.list.d/gitlab_gitlab-ce.list  # Empêche l'exécution du script si le fichier existe déjà
+  become: yes
+
+- name: Mettre à jour les dépôts
+  apt:
+    update_cache: yes
+
+- name: Installer GitLab
+  apt:
+    name: gitlab-ce
+    state: present
+
+- name: Configurer GitLab avec le fichier gitlab.rb
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reconfigure GitLab
+
+- name: Ouvrir le port 2443 dans le pare-feu
+  ansible.builtin.ufw:
+    rule: allow
+    port: '2443'
+    proto: tcp
+  when: ansible_os_family == "Debian"
+
+- name: Reconfigurer GitLab après modification
+  command: gitlab-ctl reconfigure
+  when: ansible_os_family == "Debian"
+

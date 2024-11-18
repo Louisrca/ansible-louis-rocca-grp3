@@ -1,0 +1,14 @@
+---
+# Configuration de l'installation
+gitlab_external_url: "http://{{ ansible_host }}:2443"
+gitlab_root_password: "gitlab_pwd"
+
+
+gitlab_email_enabled: false
+smtp_enable: false
+
+
+
+
+
+

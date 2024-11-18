@@ -1,0 +1,7 @@
+- name: Déploiement d’un Serveur GitLab avec Ansible
+  hosts: ansible-target
+  roles:
+    - common
+    - bdd
+    - gitlab
+    - docker

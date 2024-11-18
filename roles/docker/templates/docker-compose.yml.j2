@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ee:latest  # Vous pouvez utiliser "gitlab-ce" pour la version Community Edition
+    container_name: gitlab
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com'  # Remplacez par votre URL
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+    ports:
+      - '80:80'      # Port HTTP
+      - '443:443'    # Port HTTPS
+      - '2222:22'    # Port SSH
+    volumes:
+      - ./config:/etc/gitlab        # Configuration GitLab
+      - ./logs:/var/log/gitlab       # Logs
+      - ./data:/var/opt/gitlab       # Données GitLab (repositories, etc.)
+
+networks:
+  default:
+    external:
+      name: gitlab-network  # Pour une meilleure sécurité, créez un réseau dédié.

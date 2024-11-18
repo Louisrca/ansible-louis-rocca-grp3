@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    container_name: 'gitlab-devops'
+    volumes:
+      - /opt/gitlab/data:/var/opt/gitlab
+      - /opt/gitlab/logs:/var/log/gitlab
+      - /opt/gitlab/config:/etc/gitlab
+    
+  db:
+    image: 'postgres'
+    restart: always
+    container_name: 'postgresql-devops'
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER : 'vagrant'
+      POSTGRES_PASSWORD : 'vagrant_pwd'
+      POSTGRES_DB : 'all'
+    volumes:
+      - /app/postgres:/var/lib/postgresql
+
+    

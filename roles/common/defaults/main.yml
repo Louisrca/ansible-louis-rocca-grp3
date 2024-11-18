@@ -1,0 +1,16 @@
+common_packages: 
+  - { name: curl }
+  - { name: wget }
+  - { name: sudo }
+  - { name: ufw }
+  - { name: vim }
+  - { name: gnupg}
+  - { name: htop }
+  - { name: net-tools }
+  - { name: git }
+  - { name: openssh-server }
+  - { name: ca-certificates }
+  - { name: perl }
+  - { name: postfix }
+
+ 

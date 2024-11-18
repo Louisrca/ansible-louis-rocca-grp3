@@ -1,0 +1,49 @@
+- name: Mettre à jour le cache apt
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Instalation des packages Docker
+  apt:
+    name: "{{ item.name }}"
+    state: present
+  become: yes
+  loop: "{{ docker_packages }}"
+  when: ansible_os_family == 'Debian'
+
+- name: Créer le répertoire pour GitLab
+  file:
+    path: /opt/gitlab
+    state: directory
+    mode: '0755'
+
+- name: Créer le répertoire pour les données de GitLab
+  file:
+    path: /opt/gitlab/data
+    state: directory
+    mode: '0755'
+
+- name: Créer le répertoire pour les logs de GitLab
+  file:
+    path: /opt/gitlab/logs
+    state: directory
+    mode: '0755'
+
+- name: Créer le répertoire pour la configuration de GitLab
+  file:
+    path: /opt/gitlab/config
+    state: directory
+    mode: '0755'
+
+- name: Copier le fichier docker-compose.yml
+  copy:
+    src: ../files/docker-compose.yml
+    dest: /opt/gitlab/docker-compose.yml
+
+
+
+
+- name: Lancer les conteneurs GitLab et PostgreSQL
+  command: docker-compose up -d
+  args:
+    chdir: /opt/gitlab

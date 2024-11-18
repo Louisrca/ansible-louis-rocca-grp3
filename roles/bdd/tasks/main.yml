@@ -1,0 +1,99 @@
+---
+- name: Mettre à jour le cache apt
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Installation des packages nécessaires pour PostgreSQL
+  apt:
+    name: "{{ item.name }}"
+    state: present
+    update_cache: yes
+  become: yes
+  loop: "{{ packages_postgresql | default([]) }}"
+
+- name: Démarrer et activer le service PostgreSQL
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+
+- name: Remplacer 127.0.0.1/32 par 0.0.0.0/0 dans pg_hba.conf
+  lineinfile:
+    path: /etc/postgresql/15/main/pg_hba.conf
+    regexp: '^host\s+all\s+all\s+127\.0\.0\.1/32\s+md5'
+    line: 'host    all             all             0.0.0.0/0               md5'
+    state: present
+    backrefs: yes
+  become: yes
+
+- name: Remplacer 'local all postgres peer' par 'local all postgres trust' dans pg_hba.conf
+  lineinfile:
+    path: /etc/postgresql/15/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+peer'
+    line: 'local   all             postgres                                trust'
+    state: present
+    backrefs: yes
+  become: yes
+
+# Modification du fichier pg_hba.conf pour désactiver l'authentification par mot de passe
+- name: Remplacer 'local all postgres peer' par 'local all postgres trust' dans pg_hba.conf
+  lineinfile:
+    path: /etc/postgresql/15/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+peer'
+    line: 'local all postgres trust'
+    state: present
+    backrefs: yes
+
+
+- name: Redémarrer PostgreSQL pour appliquer les modifications
+  service:
+    name: postgresql
+    state: restarted
+
+- name: Définir le mot de passe de l'utilisateur PostgreSQL 'postgres'
+  postgresql_user:
+    name: postgres
+    password: "{{ postgres_admin_password }}"
+    state: present
+
+# Création d'un nouvel utilisateur PostgreSQL 'vagrant' sans mot de passe
+- name: Créer un nouvel utilisateur PostgreSQL 'vagrant'
+  postgresql_user:
+    name: vagrant
+    password: "{{ postgresql_password }}"
+    state: present
+    login_user: postgres
+    login_password: "{{ postgres_admin_password }}"
+  become: yes
+
+# Création de la base de données PostgreSQL 'all'
+- name: Créer la base de données PostgreSQL 'all'
+  postgresql_db:
+    name: all
+    owner: vagrant
+    state: present
+    login_user: postgres
+    login_password: "{{ postgres_admin_password }}"
+  become: yes
+
+# Création de la base de données PostgreSQL 'stage'
+- name: Créer la base de données PostgreSQL 'stage'
+  postgresql_db:
+    name: stage
+    owner: vagrant
+    state: present
+    login_user: postgres
+    login_password: "{{ postgres_admin_password }}"
+  become: yes
+
+# Création de la base de données PostgreSQL 'prod'
+- name: Créer la base de données PostgreSQL 'prod'
+  postgresql_db:
+    name: prod
+    owner: vagrant
+    state: present
+    login_user: postgres
+    login_password: "{{ postgres_admin_password }}"
+  become: yes
