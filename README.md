@@ -1,7 +1,9 @@
-pour run le projet : 
+## Pour run le projet
 
 
+```shell
 ansible-playbook -i inventory.yml main.yml -e "user_name=<nom_utilisateur> host_ip=<ip-vm-client>"
+```
 
 pour vérifier que gitlab fonctionne : http://<votre-ip-vm-client>:2443
 
