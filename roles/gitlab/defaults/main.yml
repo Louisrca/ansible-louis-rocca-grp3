@@ -3,12 +3,9 @@
 gitlab_external_url: "http://{{ ansible_host }}:2443"
 gitlab_root_password: "gitlab_pwd"
 
+gitlab_admin_email: admin@example.com
+gitlab_admin_username: admin
+gitlab_admin_password: securepassword
 
 gitlab_email_enabled: false
 smtp_enable: false
-
-
-
-
-
-

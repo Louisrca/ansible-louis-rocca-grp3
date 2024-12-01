@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Crée un utilisateur administrateur par défaut dans GitLab
+gitlab-rails runner "User.find_or_create_by!(email: '{{ gitlab_admin_email }}') do |user|
+  user.name = 'Administrator'
+  user.username = '{{ gitlab_admin_username }}'
+  user.password = '{{ gitlab_admin_password }}'
+  user.password_confirmation = '{{ gitlab_admin_password }}'
+  user.admin = true
+  user.save!
+end"
