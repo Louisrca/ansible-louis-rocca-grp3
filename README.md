@@ -1,4 +1,6 @@
 # Projet Ansible
+*Louis ROCCA - Groupe 3 Master 1 Développeur FullStack*
+
 Déployer un serveur GitLab en utilisant Ansible pour automatiser l’ensemble du processus. Le but final est bien de n’avoir qu’un “push button” pour deployer le serveur Gitlab.
 
 ### Pour run le projet
