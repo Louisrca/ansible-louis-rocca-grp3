@@ -5,7 +5,7 @@
 
 - Déployer un serveur GitLab en utilisant Ansible pour automatiser l’ensemble du processus. Le but final est bien de n’avoir qu’un “push button” pour deployer le serveur Gitlab.
 - Déployement d'une base de données avec PostgreSQL. 
-- Créer une image pour conteneuriser le gitlab.
+- Créer une image pour conteneuriser gitlab.
 - Créer une image pour conteneuriser postgreSQL.
 
 ### Pour run le projet
